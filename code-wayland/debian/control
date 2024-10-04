@@ -1,0 +1,18 @@
+Source: code-wayland
+Section: utils
+Priority: optional
+Maintainer: Oriol Arcas <oriol.arcas@gmail.com>
+Rules-Requires-Root: no
+Build-Depends:
+ debhelper-compat (= 13),
+Standards-Version: 4.7.0
+
+Package: code-wayland
+Architecture: any
+Depends:
+ ${misc:Depends},
+ code,
+Description: Patch for Visual Studio Code desktop file to enable Wayland
+ This package installs a hook to automatically patch the Visual Studio Code
+ desktop entry for enabling Wayland support every time the code package
+ is upgraded.

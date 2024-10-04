@@ -1,0 +1,15 @@
+#!/bin/sh
+set -e
+
+case "$1" in
+  configure)
+    # Run the patch script during initial installation
+    /usr/bin/patch-code-desktop || true
+    ;;
+  triggered)
+    # Run the patch script when the trigger is activated
+    /usr/bin/patch-code-desktop || true
+    ;;
+esac
+
+exit 0

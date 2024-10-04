@@ -1,0 +1,20 @@
+#!/bin/sh
+set -e
+
+DESKTOP_FILE="/usr/share/applications/code.desktop"
+
+# Check if the file exists
+if [ ! -f "$DESKTOP_FILE" ]; then
+  exit 0
+fi
+
+# Check if the file already contains the Wayland patch
+if grep -q "Exec=/usr/share/code/code --enable-ozone --ozone-platform=wayland" "$DESKTOP_FILE"; then
+  # Already patched
+  exit 0
+fi
+
+# Apply the patch
+sed -i 's|Exec=/usr/share/code/code|Exec=/usr/share/code/code --enable-ozone --ozone-platform=wayland|' "$DESKTOP_FILE"
+
+exit 0

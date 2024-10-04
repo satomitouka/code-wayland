@@ -1,0 +1,16 @@
+Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: code-wayland
+Source: https://example.com/code-wayland
+
+Files: debian/*
+Copyright: 2024 Oriol Arcas <oriol.arcas@gmail.com>
+License: GPL-3+
+
+License: GPL-3+
+ This package is free software; you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation; either version 3 of the License, or
+ (at your option) any later version.
+
+ On Debian systems, the complete text of the GNU General Public License
+ can be found in the `/usr/share/common-licenses/GPL-3` file.

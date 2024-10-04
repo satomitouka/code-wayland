@@ -1,0 +1,11 @@
+code-wayland/debian/code-wayland.substvars
+code-wayland/debian/debhelper-build-stamp
+code-wayland/debian/files
+code-wayland/debian/.debhelper/
+code-wayland/debian/code-wayland/
+code-wayland_*.build
+code-wayland_*.buildinfo
+code-wayland_*.changes
+code-wayland_*.deb
+code-wayland_*.dsc
+code-wayland_*.tar.gz
