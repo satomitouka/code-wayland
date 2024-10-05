@@ -2,7 +2,7 @@
 
 ## Overview
 
-The `code-wayland` package provides a patch for the Visual Studio Code desktop entry (`code.desktop`) to enable better compatibility with Wayland-based systems. See [Blurry_text_under_Wayland](https://wiki.archlinux.org/title/Visual_Studio_Code#Blurry_text_under_Wayland).
+The `code-wayland` package provides a patch for the Visual Studio Code desktop entry (`code.desktop`) to enable better compatibility with Wayland-based systems. See [VS Code should default to Wayland when possible](https://github.com/microsoft/vscode/issues/207033) and [Blurry text under Wayland](https://wiki.archlinux.org/title/Visual_Studio_Code#Blurry_text_under_Wayland).
 
 This package automatically modifies the `code.desktop` file whenever the `code` package is installed or updated, ensuring that Visual Studio Code runs with Wayland support using the appropriate `--enable-ozone` and `--ozone-platform=wayland` options.
 
