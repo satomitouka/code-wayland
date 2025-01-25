@@ -1,106 +1,109 @@
 # `code-wayland`
 
-## Overview
+## 说明
+本fork增加了中文输入法所需的参数
 
-The `code-wayland` package provides a patch for the Visual Studio Code desktop entry (`code.desktop`) to enable better compatibility with Wayland-based systems. See [VS Code should default to Wayland when possible](https://github.com/microsoft/vscode/issues/207033) and [Blurry text under Wayland](https://wiki.archlinux.org/title/Visual_Studio_Code#Blurry_text_under_Wayland).
+## 概述
 
-This package automatically modifies the `code.desktop` file whenever the `code` package is installed or updated, ensuring that Visual Studio Code runs with Wayland support using the appropriate `--enable-ozone` and `--ozone-platform=wayland` options.
+`code-wayland` 包为 Visual Studio Code 桌面入口 (`code.desktop`) 提供了一个补丁，以便在基于 Wayland 的系统上实现更好的兼容性。请参阅 [VS Code 应该在可能的情况下默认使用 Wayland](https://github.com/microsoft/vscode/issues/207033) 和 [Wayland 下模糊的文本](https://wiki.archlinux.org/title/Visual_Studio_Code#Blurry_text_under_Wayland)。
 
-## Features
+该包会在安装或更新 `code` 包时自动修改 `code.desktop` 文件，以便 Visual Studio Code 使用适当的 `--enable-ozone` 和 `--ozone-platform=wayland` 选项运行 Wayland 支持。
 
-- **Automatic Patch Application**: Automatically detects changes to the `code.desktop` file and re-applies the Wayland patch.
-- **Trigger-Based**: Uses Debian's trigger system to ensure that the patch is applied whenever the `code` package is modified.
-- **Manual Re-Patching Option**: Provides a script that can be run manually if needed to re-apply the patch.
+## 功能
 
-## Installation
+- **自动补丁应用**: 自动检测 `code.desktop` 文件的更改并重新应用 Wayland 补丁。
+- **基于触发器**: 使用 Debian 的触发器系统，以确保在修改 `code` 包时应用补丁。
+- **手动重新补丁选项**: 提供一个脚本，可以手动运行以重新应用补丁。
 
-1. Make sure the `code` package is installed on your system:
+## 安装
+
+1. 确保系统上安装了 `code` 包：
 
    ```bash
    sudo apt-get install code
    ```
 
-2. Download and install the `code-wayland` package:
+2. 下载并安装 `code-wayland` 包：
 
    ```bash
-   sudo dpkg -i code-wayland_<version>.deb
+   sudo dpkg -i code-wayland_<版本>.deb
    ```
 
-   Replace `<version>` with the appropriate version of the `code-wayland` package.
+   将 `<版本>` 替换为 `code-wayland` 包的适当版本。
 
-3. After installation, the package will automatically patch the `code.desktop` file to enable Wayland support using the `--enable-ozone` flag.
+3. 安装后，该包会自动修补 `code.desktop` 文件，以便使用 `--enable-ozone` 标志启用 Wayland 支持。
 
-## How It Works
+## 工作原理
 
-The `code-wayland` package uses a Debian path `interest-noawait` trigger to watch for changes to the `/usr/share/applications/code.desktop` file. When the `code` package is installed or updated, this trigger activates the `code-wayland` patch script to modify the `Exec` entry in the desktop file.
+`code-wayland` 包使用 Debian 的 `interest-noawait` 触发器来监视 `/usr/share/applications/code.desktop` 文件的更改。当 `code` 包安装或更新时，该触发器激活 `code-wayland` 补丁脚本，以修改桌面文件中的 `Exec` 条目。
 
-### Trigger Mechanism
+### 触发器机制
 
-- **Trigger File**: `debian/triggers`
+- **触发器文件**: `debian/triggers`
 
   ```text
   interest-noawait /usr/share/applications/code.desktop
   ```
 
-- **Post-Installation Script**: `debian/postinst`
+- **安装后脚本**: `debian/postinst`
 
-  This script is executed whenever the `code` package is modified. It runs the `patch-code-desktop` script to apply the necessary changes to the desktop file.
+  该脚本在修改 `code` 包时执行。它运行 `patch-code-desktop` 脚本以应用桌面文件所需的更改。
 
-- **Patch Script**: `/usr/bin/patch-code-desktop`
+- **补丁脚本**: `/usr/bin/patch-code-desktop`
 
-  The patching script checks if the `Exec` line in `/usr/share/applications/code.desktop` has been modified to include the Wayland-specific flags (`--enable-ozone --ozone-platform=wayland`). If not, it updates the line accordingly:
+  补丁脚本检查 `/usr/share/applications/code.desktop` 文件中的 `Exec` 行是否已修改为包含 Wayland 特定的标志 (`--enable-ozone --ozone-platform=wayland`)。如果没有，则更新该行：
 
   ```bash
-  # Original Exec line:
+  # 原始 Exec 行：
   Exec=/usr/share/code/code
 
-  # Patched Exec line:
+  # 补丁后的 Exec 行：
   Exec=/usr/share/code/code --enable-ozone --ozone-platform=wayland
   ```
 
-## Manual Reinstallation of `code`
+## 手动重新安装 `code`
 
-If you need to manually test or reapply the patch, you can trigger the reinstallation of the `code` package. This will cause the `code-wayland` package to reapply the patch automatically:
+如果需要手动测试或重新应用补丁，可以触发 `code` 包的重新安装。这将导致 `code-wayland` 包自动重新应用补丁：
 
 ```bash
 sudo apt-get install --reinstall code
 ```
 
-This command will trigger the `code-wayland` patch script to reapply the patch.
+该命令将触发 `code-wayland` 补丁脚本以重新应用补丁。
 
-## Verifying the Patch
+## 验证补丁
 
-To confirm that the patch has been applied correctly, open the `code.desktop` file and look for the modified `Exec` line:
+要确认补丁已正确应用，请打开 `code.desktop` 文件并查找修改后的 `Exec` 行：
 
 ```bash
 cat /usr/share/applications/code.desktop | grep Exec
 ```
 
-You should see the following line (or a similar one):
+您应该看到以下行（或类似的行）：
 
 ```text
 Exec=/usr/share/code/code --enable-ozone --ozone-platform=wayland
 ```
 
-## Uninstallation
+## 卸载
 
-To remove `code-wayland` from your system, use the following command:
+要从系统中删除 `code-wayland`，请使用以下命令：
 
 ```bash
 sudo apt-get remove --purge code-wayland
 ```
 
-After removing the package, you may need to manually restore the original `code.desktop` file if it was modified:
+卸载包后，如果修改了原始 `code.desktop` 文件，则可能需要手动恢复原始文件：
 
 ```bash
 sudo apt-get install --reinstall code
 ```
 
-## References
+## 参考
 
-- [`DpkgTriggers`](https://wiki.debian.org/DpkgTriggers) (in the Debian Wiki).
-- [`deb-triggers(5)`](https://manpages.debian.org/bookworm/dpkg-dev/deb-triggers.5.en.html) manpage.
+- [`DpkgTriggers`](https://wiki.debian.org/DpkgTriggers)（Debian Wiki 中）。
+- [`deb-triggers(5)`](https://manpages.debian.org/bookworm/dpkg-dev/deb-triggers.5.en.html) 手册页。
 
-## License
+## 许可
 
-This project is licensed under the GPL-3+ License. See the [`LICENSE`] file for more details.
+该项目以 GPL-3+ 许可证发布。请参阅 [`LICENSE`] 文件以获取更多详细信息。
