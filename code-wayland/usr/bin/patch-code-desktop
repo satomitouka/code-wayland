@@ -9,12 +9,12 @@ if [ ! -f "$DESKTOP_FILE" ]; then
 fi
 
 # Check if the file already contains the Wayland patch
-if grep -q "Exec=/usr/share/code/code --enable-ozone --ozone-platform=wayland" "$DESKTOP_FILE"; then
+if grep -q "Exec=/usr/share/code/code --new-window %F --enable-features=UseOzonePlatform --ozone-platform=wayland --enable-wayland-ime" "$DESKTOP_FILE"; then
   # Already patched
   exit 0
 fi
 
 # Apply the patch
-sed -i 's|Exec=/usr/share/code/code|Exec=/usr/share/code/code --enable-ozone --ozone-platform=wayland|' "$DESKTOP_FILE"
+sed -i 's|Exec=/usr/share/code/code %F|Exec=/usr/share/code/code --new-window %F --enable-features=UseOzonePlatform --ozone-platform=wayland --enable-wayland-ime|' "$DESKTOP_FILE"
 
 exit 0
